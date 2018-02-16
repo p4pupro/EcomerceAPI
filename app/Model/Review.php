@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
 	protected $fillable = [
-		'star','customer','review'
+		'customer','star','review'
 	];
     
     public function product()

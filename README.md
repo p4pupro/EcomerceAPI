@@ -2,7 +2,7 @@
 # Autor: Domingo Pérez Guerrero
 # Alias: p4pupro
 
-This a simple example of how to do a API REST in Laravel 5.
+This a simple example of how to make a API REST in Laravel 5.
 
 For more info: p4pupro@gmail.com
 

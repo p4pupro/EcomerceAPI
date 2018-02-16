@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Exceptions\ProductNotBelongsToUser;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\Product\ProductCollection;
@@ -10,13 +8,11 @@ use App\Model\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
 class ProductController extends Controller
 {
-
-    public function __construct ()
+    public function __construct()
     {
-        $this->middleware('auth:api')->except('index', 'show');
+        $this->middleware('auth:api')->except('index','show');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +23,6 @@ class ProductController extends Controller
     {
         return ProductCollection::collection(Product::paginate(20));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -37,7 +32,6 @@ class ProductController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -57,7 +51,6 @@ class ProductController extends Controller
             'data' => new ProductResource($product)
         ],Response::HTTP_CREATED);
     }
-
     /**
      * Display the specified resource.
      *
@@ -68,7 +61,6 @@ class ProductController extends Controller
     {
         return new ProductResource($product);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -79,7 +71,6 @@ class ProductController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -97,7 +88,6 @@ class ProductController extends Controller
             'data' => new ProductResource($product)
         ],Response::HTTP_CREATED);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -106,6 +96,15 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $this->ProductUserCheck($product);
+        $product->delete();
+        return response(null,Response::HTTP_NO_CONTENT);
+    }
+    
+    public function ProductUserCheck($product)
+    {
+        if (Auth::id() !== $product->user_id) {
+            throw new ProductNotBelongsToUser;
+        }
     }
 }
